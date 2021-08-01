@@ -76,10 +76,10 @@ $(document).ready(() => {
                   
                     let prop = Object.keys(e.features[0].properties)
                     let val = Object.values(e.features[0].properties)
-
+            
                     let htmlCol = []
 
-                    for(let i in prop) {
+                    for(let i in prop.slice(0,prop.length - 2)) {
                         let html = `
                             <tr>
                                 <td style='font-weight:bold'>${prop[i]} </td>
@@ -160,7 +160,18 @@ $(document).ready(() => {
                     })
                 }
 
-                UseBbox()
+                const urlParams = new URLSearchParams(window.location.search);
+                const query = urlParams.get('latlng');
+
+                if(query !== null) {
+                    let coor = query.split(",").map(a => { return parseFloat(a) })
+                    map.flyTo({
+                        center: coor.reverse(),
+                        zoom: 18
+                    });
+                } else {
+                    UseBbox()
+                }
 
                 document
                     .getElementById('fitbound')
