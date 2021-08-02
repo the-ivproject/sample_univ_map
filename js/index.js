@@ -32,7 +32,7 @@ mapboxgl.accessToken = mapbox_token
 let map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/mapbox/streets-v11', // YOUR TURN: choose a style: https://docs.mapbox.com/api/maps/#styles
-    center: [ -75.887764,39.781616], // starting position [lng, lat]
+    center: [-75.887764, 39.781616], // starting position [lng, lat]
     zoom: 7, // starting zoom
     transformRequest: transformRequest
 });
@@ -70,19 +70,22 @@ $(document).ready(() => {
                         'text-field': ['get', 'Mixed City'],
                         'icon-image': 'marker-15',
                         'icon-anchor': 'bottom',
-                        'text-size': 8,
+                        'text-size': 9,
                         'text-allow-overlap': false,
-                        'text-ignore-placement': false,
+                        'text-ignore-placement': true,
                         'icon-allow-overlap': true,
                         'icon-ignore-placement': true,
                         'text-font': [
-                        'Open Sans Semibold',
-                        'Arial Unicode MS Bold'
+                            'Open Sans Semibold',
+                            'Arial Unicode MS Bold'
                         ],
                         'text-offset': [0, 0.1],
                         'text-anchor': 'top',
-                        },
-                       
+                    },
+                    paint: {
+                        "text-color": "red"
+                      }
+
                 }
 
                 map.addLayer(geo);
@@ -91,13 +94,13 @@ $(document).ready(() => {
                 // location of the feature, with description HTML from its properties.
                 map.on('click', 'csvData', function (e) {
                     let coordinates = e.features[0].geometry.coordinates.slice();
-                  
+
                     let prop = Object.keys(e.features[0].properties)
                     let val = Object.values(e.features[0].properties)
-            
+
                     let htmlCol = []
 
-                    for(let i in prop.slice(0,prop.length - 3)) {
+                    for (let i in prop.slice(0, prop.length - 3)) {
                         let html = `
                             <tr>
                                 <td style='font-weight:bold'>${prop[i]} </td>
@@ -114,7 +117,7 @@ $(document).ready(() => {
                         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                     }
 
-                    new mapboxgl.Popup({closeButton:false})
+                    new mapboxgl.Popup({ closeButton: false })
                         .setLngLat(coordinates)
                         .setHTML(`<table>${htmlCol.join("")}</table>`)
                         .addTo(map);
@@ -181,7 +184,7 @@ $(document).ready(() => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const query = urlParams.get('latlng');
 
-                if(query !== null) {
+                if (query !== null) {
                     let coor = query.split(",").map(a => { return parseFloat(a) })
                     map.flyTo({
                         center: coor.reverse(),
