@@ -12,7 +12,7 @@ let stylePoint = {
     'circle-radius': 5,
     'circle-stroke-width': 3,
     'circle-stroke-color': '#ffffff',
-    'circle-opacity': 1
+    'circle-opacity': 1,
 }
 
 // Don't change anything below
@@ -59,12 +59,30 @@ $(document).ready(() => {
             let addDataLayer = () => {
                 var geo = {
                     'id': 'csvData',
-                    'type': 'circle',
+                    'type': 'symbol',
                     'source': {
                         'type': 'geojson',
                         'data': data
                     },
-                    'paint': stylePoint,
+                    'layout': {
+                        'icon-size': 2,
+                        // get the title name from the source's "title" property
+                        'text-field': ['get', 'Mixed City'],
+                        'icon-image': 'marker-15',
+                        'icon-anchor': 'bottom',
+                        'text-size': 8,
+                        'text-allow-overlap': false,
+                        'text-ignore-placement': false,
+                        'icon-allow-overlap': true,
+                        'icon-ignore-placement': true,
+                        'text-font': [
+                        'Open Sans Semibold',
+                        'Arial Unicode MS Bold'
+                        ],
+                        'text-offset': [0, 0.1],
+                        'text-anchor': 'top',
+                        },
+                       
                 }
 
                 map.addLayer(geo);
@@ -79,7 +97,7 @@ $(document).ready(() => {
             
                     let htmlCol = []
 
-                    for(let i in prop.slice(0,prop.length - 2)) {
+                    for(let i in prop.slice(0,prop.length - 3)) {
                         let html = `
                             <tr>
                                 <td style='font-weight:bold'>${prop[i]} </td>
